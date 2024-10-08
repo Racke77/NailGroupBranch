@@ -22,8 +22,7 @@ namespace NailsGroupAssignment
             Fingers = new List<Finger>();
             Toes = new List<Toe>();
 
-            PopulateData();
-
+            PopulateData(DesiredLength, 3.5f);
         }
 
         public void Run(int numberOfDays)
@@ -52,19 +51,19 @@ namespace NailsGroupAssignment
             }
         }
 
-        public void PopulateData()
+        public void PopulateData(float desiredLength, float startLength)
         {
 
             foreach (TypeOfFinger fingerType in Enum.GetValues(typeof(TypeOfFinger)))
             {
-                Fingers.Add(new Finger(fingerType, 2.0f, 3.5f));
-                Fingers.Add(new Finger(fingerType, 2.0f, 3.5f));
+                Fingers.Add(new Finger(fingerType, desiredLength, startLength));
+                Fingers.Add(new Finger(fingerType, desiredLength, startLength));
             }
 
             foreach (TypeOfToe toeType in Enum.GetValues(typeof(TypeOfToe)))
             {
-                Toes.Add(new Toe(toeType, 2.0f, 3.5f));
-                Toes.Add(new Toe(toeType, 2.0f, 3.5f));
+                Toes.Add(new Toe(toeType, desiredLength, startLength));
+                Toes.Add(new Toe(toeType, desiredLength, startLength));
             }
 
         }
