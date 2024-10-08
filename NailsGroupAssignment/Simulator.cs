@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace NailsGroupAssignment
 {
@@ -27,48 +28,28 @@ namespace NailsGroupAssignment
 
         public void Run(int numberOfDays)
         {
-
+            Printer printer = new Printer();
             List<Digit> digits = new List<Digit>();
+
             digits.AddRange(Fingers);
             digits.AddRange(Toes);
 
-            for (int i = 0; i < numberOfDays; i++)
+            for (int i = 0; i < numberOfDays; i++) //how many days -> repeat
             {
-                Console.WriteLine();
-                Console.WriteLine($"Day number {i}:");
+                printer.PrintDay(i);
 
-
-                foreach (Digit digit in digits)
+                foreach (Digit digit in digits) //grow nails every day
                 {
-                    digit.nail.Grow();
+                    digit.Nail.Grow();
                 }
 
-                bool shouldClip = CheckIfShouldClip(Fingers, Toes, DesiredLength);
-
-                foreach (Digit digit in digits)
+                if (CheckIfShouldClip(Fingers, Toes, DesiredLength)) //check if to cut -> cut
                 {
-                    if (shouldClip)
-                    {
-                        NailClipper.Clip(digit.nail, DesiredLength);
-                    }
-
-                    string nailLength = digit.nail.Length.ToString("F1", CultureInfo.InvariantCulture);
-
-                    if (digit is Finger)
-                    {
-                        Finger finger = (Finger)digit;
-                        Console.WriteLine($"Finger {finger.TypeOfFinger} has reached " + nailLength + "mm");
-                    }
-                    else
-                    {
-                        Toe toe = (Toe)digit;
-                        Console.WriteLine($"Toe {toe.TypeOfToe} has reached " + nailLength + "mm");
-                    }
-
-
+                    NailClipper.ClipAll(Fingers, Toes, DesiredLength);
                 }
+
+                printer.PrintNailLength(Toes, Fingers); //print out all of the nail-lengths
             }
-
         }
 
         public void PopulateData()
@@ -90,26 +71,19 @@ namespace NailsGroupAssignment
 
         public bool CheckIfShouldClip(List<Finger> fingers, List<Toe> toes, float DesiredLength)
         {
-
-            float averageLength = 0;
-            float allAddedLength = 0;
-
+            float allAddedLength = 0; //create a sum.Length
             foreach (Finger finger in fingers)
             {
-                allAddedLength += finger.nail.Length;
+                allAddedLength += finger.Nail.Length;
             }
-
             foreach (Toe toe in toes)
             {
-                allAddedLength += toe.nail.Length;
+                allAddedLength += toe.Nail.Length;
             }
+            //create an average-value of length
+            float averageLength = allAddedLength / (fingers.Count + toes.Count);
 
-            averageLength = allAddedLength / (fingers.Count + toes.Count);
-            Console.WriteLine(averageLength);
-            Console.WriteLine(fingers.Count + toes.Count);
-
-
-            if (averageLength <= DesiredLength + 2)
+            if (averageLength <= DesiredLength + 2) //if it's smaller than desired, return false (don't clip)
             {
                 return false;
             }

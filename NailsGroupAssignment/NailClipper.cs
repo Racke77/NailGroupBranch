@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,17 @@ namespace NailsGroupAssignment
 
             lengthToCut /= 10f; //turning Micrometer into MM
             nail.Length -= lengthToCut; //remove from object.Length
+        }
+        public void ClipAll(List<Finger> fingers,List<Toe> toes, float desiredLength)
+        {
+            foreach (Finger finger in fingers)
+            {
+                Clip(finger.Nail, desiredLength);
+            }
+            foreach (Toe toe in toes)
+            {
+                Clip(toe.Nail, desiredLength);
+            }
         }
     }
 }
